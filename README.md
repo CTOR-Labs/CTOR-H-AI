@@ -85,6 +85,8 @@ Each branch should include:
 
 Testing ensures consistency across all platform implementations.
 
+You can play one of the versions on our website:
+https://ctorgame.com/ai
 ---
 
 ## 🧭 CTOR‑Labs Ecosystem
