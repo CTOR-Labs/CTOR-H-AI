@@ -1,0 +1,11 @@
+{
+  "versions": {
+    "v1": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/v1",
+    "v2": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/v2",
+    "v3": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/v3",
+    "v4": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/v4",
+    "v5": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/v5",
+    "stable": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/main",
+    "experimental": "https://github.com/CTOR-Labs/CTOR-H-AI/tree/experimental"
+  }
+}
