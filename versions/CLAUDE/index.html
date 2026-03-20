@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTOR — Toroidal Strategy Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --panel: #0f1629;
+    --border: #1e3a5f;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --white-piece: #e8f4f8;
+    --black-piece: #1a1a2e;
+    --cell-main: #111827;
+    --cell-extra: #0d1117;
+    --cell-hover: #1e3a5f;
+    --text: #a8c5da;
+    --text-bright: #e2f0f7;
+    --green: #00ff88;
+    --red: #ff3366;
+    --yellow: #ffd700;
+    --glow-cyan: 0 0 10px #00d4ff88, 0 0 20px #00d4ff44;
+    --glow-orange: 0 0 10px #ff6b3588, 0 0 20px #ff6b3544;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, #0a1a3a44 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, #1a0a2e44 0%, transparent 50%);
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-shadow: var(--glow-cyan);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--text);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .game-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── Board column: canvas + instructions below ── */
+  .board-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ── Board ── */
+  #board-wrap {
+    position: relative;
+    display: inline-block;
+  }
+
+  #board-canvas {
+    display: block;
+    cursor: default;
+    image-rendering: pixelated;
+  }
+
+  /* ── Side panel ── */
+  .panel {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+  }
+
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  /* Score */
+  .score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .score-label { font-size: 0.7rem; color: var(--text); }
+  .score-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .score-p1 { color: var(--accent); }
+  .score-p2 { color: var(--accent2); }
+
+  /* Actions counter */
+  .action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #1a2a3a;
+  }
+  .action-row:last-child { border-bottom: none; }
+  .action-name { font-size: 0.7rem; color: var(--text); }
+  .action-count {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--green);
+    min-width: 20px;
+    text-align: right;
+  }
+  .action-count.zero { color: #333; }
+
+  /* Action buttons */
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    text-align: left;
+  }
+  .btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #00d4ff11;
+  }
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #00d4ff22;
+    box-shadow: var(--glow-cyan);
+  }
+  .btn.btn-start {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .btn.btn-start:hover:not(:disabled) {
+    background: #00ff8822;
+    box-shadow: 0 0 10px #00ff8844;
+  }
+  .btn.btn-end-game {
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .btn.btn-end-game:hover:not(:disabled) {
+    background: #ff336622;
+  }
+  .btn.btn-end-turn {
+    border-color: var(--yellow);
+    color: var(--yellow);
+    margin-top: 4px;
+  }
+  .btn.btn-end-turn:hover:not(:disabled) {
+    background: #ffd70022;
+    box-shadow: 0 0 10px #ffd70044;
+  }
+
+  /* Status / log */
+  #status {
+    font-size: 0.68rem;
+    color: var(--text-bright);
+    line-height: 1.5;
+    min-height: 40px;
+    padding: 8px;
+    background: #060a12;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    word-break: break-word;
+  }
+
+  .turn-indicator {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .turn-p1 {
+    background: #00d4ff18;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+  .turn-p2 {
+    background: #ff6b3518;
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+  }
+  .turn-none {
+    background: #1a1a2e;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  #winner-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000000cc;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+  }
+  #winner-overlay.show { display: flex; }
+  .winner-box {
+    background: var(--panel);
+    border: 2px solid var(--accent);
+    box-shadow: var(--glow-cyan);
+    border-radius: 10px;
+    padding: 40px 60px;
+    text-align: center;
+  }
+  .winner-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .winner-sub { font-size: 0.8rem; color: var(--text); margin-bottom: 24px; }
+  .btn-ok {
+    padding: 10px 30px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--accent);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+  .btn-ok:hover { background: #00d4ff22; }
+
+  @media (max-width: 680px) {
+    h1 { font-size: 1.2rem; }
+    .panel { width: 100%; flex-direction: row; flex-wrap: wrap; }
+    .card { flex: 1; min-width: 140px; }
+  }
+
+  /* ── Instructions below board ── */
+  .instructions {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 0.68rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .instructions strong {
+    color: var(--accent);
+    font-weight: normal;
+    letter-spacing: 1px;
+  }
+  .instr-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.52rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .instr-row {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    border-bottom: 1px solid #141e2e;
+    padding: 3px 0;
+  }
+  .instr-row:last-child { border-bottom: none; }
+  .instr-key {
+    min-width: 76px;
+    color: var(--accent);
+    font-size: 0.65rem;
+  }
+  .instr-desc { color: var(--text); font-size: 0.65rem; }
+</style>
+</head>
+<body>
+
+<h1>CTOR</h1>
+<div class="subtitle">Toroidal Strategy · Two Players</div>
+
+<div class="game-layout">
+
+  <!-- Board column: canvas + instructions -->
+  <div class="board-column">
+    <div id="board-wrap">
+      <canvas id="board-canvas"></canvas>
+    </div>
+
+    <!-- Instructions below board -->
+    <div class="instructions">
+      <div class="instr-title">Mouse Controls</div>
+      <div class="instr-row">
+        <span class="instr-key">PUT</span>
+        <span class="instr-desc">Click <strong>[Put]</strong> button, then <strong>left-click</strong> any empty cell to place your piece. Up to 2×.</span>
+      </div>
+      <div class="instr-row">
+        <span class="instr-key">MOVE</span>
+        <span class="instr-desc">Click <strong>[Move]</strong> button, then <strong>drag</strong> your piece to an adjacent empty cell. Up to 2×.</span>
+      </div>
+      <div class="instr-row">
+        <span class="instr-key">REPLACE</span>
+        <span class="instr-desc">Click <strong>[Replace]</strong> button, <strong>click 2 of your pieces</strong> to remove, then <strong>click empty cell</strong> for new piece. 1×.</span>
+      </div>
+      <div class="instr-row">
+        <span class="instr-key">END TURN</span>
+        <span class="instr-desc">Click <strong>[End Turn]</strong> to finish your turn and let the AI move.</span>
+      </div>
+      <div class="instr-row">
+        <span class="instr-key">EATING</span>
+        <span class="instr-desc">A piece is captured automatically if surrounded by <strong>5+</strong> enemy pieces in its 3×3 neighbourhood.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel (right side) -->
+  <div class="panel">
+
+    <!-- Turn indicator -->
+    <div id="turn-ind" class="turn-indicator turn-none">Press "Start Game"</div>
+
+    <!-- Score -->
+    <div class="card">
+      <div class="card-title">Score</div>
+      <div class="score-row">
+        <span class="score-label">▶ You (black)</span>
+        <span class="score-value score-p1" id="sc1">0</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">▶ AI (white)</span>
+        <span class="score-value score-p2" id="sc2">0</span>
+      </div>
+    </div>
+
+    <!-- Your turn counters -->
+    <div class="card" id="card-actions">
+      <div class="card-title">Your Turn</div>
+      <div class="action-row">
+        <span class="action-name">Put</span>
+        <span class="action-count" id="cnt-put">2</span>
+      </div>
+      <div class="action-row">
+        <span class="action-name">Move</span>
+        <span class="action-count" id="cnt-move">2</span>
+      </div>
+      <div class="action-row">
+        <span class="action-name">Replace</span>
+        <span class="action-count" id="cnt-replace">1</span>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="card">
+      <div class="card-title">Actions</div>
+      <div class="btn-row">
+        <button class="btn" id="btn-put" disabled>[ Put ] Place piece</button>
+        <button class="btn" id="btn-move" disabled>[ Move ] Move piece</button>
+        <button class="btn" id="btn-replace" disabled>[ Replace ] Swap pieces</button>
+        <button class="btn btn-end-turn" id="btn-end-turn" disabled>✓ End Turn</button>
+      </div>
+    </div>
+
+    <!-- Control buttons -->
+    <div class="card">
+      <div class="card-title">Game</div>
+      <div class="btn-row">
+        <button class="btn btn-start" id="btn-start">▶ Start Game</button>
+        <button class="btn btn-end-game" id="btn-end-game" disabled>■ End Game</button>
+      </div>
+    </div>
+
+    <!-- Status log -->
+    <div id="status">Welcome to CTOR. Press "Start Game" to begin.</div>
+
+  </div>
+</div>
+
+<!-- Winner overlay -->
+<div id="winner-overlay">
+  <div class="winner-box">
+    <div class="winner-title" id="winner-title">Victory!</div>
+    <div class="winner-sub" id="winner-sub"></div>
+    <button class="btn-ok" onclick="closeWinner()">OK</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CTOR GAME  –  Full MVP Implementation
+//  Board: 8×8 main field + perimeter extra cells (toroidal)
+// ═══════════════════════════════════════════════════════
+
+const N = 8; // main board size
+const EMPTY = 0, P1 = 1, P2 = 2; // cell states
+
+// ── Canvas / rendering constants ──
+const CS = 44;          // cell size px
+const PAD = CS;         // perimeter padding (extra cells)
+const TOTAL = N + 2;    // grid including perimeter = 10×10
+
+// ── Game state ──
+let board = [];          // [row][col] on main field, 0-indexed 0..N-1
+let gameRunning = false;
+let currentPlayer = 0;   // 1 or 2
+
+// Player 1 action counters
+let putLeft = 2, moveLeft = 2, replaceLeft = 1;
+
+// Current mode: null | 'put' | 'move' | 'replace'
+let mode = null;
+
+// Move sub-state
+let moveSrc = null;  // {r, c} piece selected for move
+
+// Replace sub-state
+let replaceSelected = [];  // up to 2 {r,c}
+let replaceWaitDest = false;
+
+// Drag state (for move)
+let dragPiece = null;   // {r, c, startX, startY}
+let dragOffX = 0, dragOffY = 0;
+let dragCurrentX = 0, dragCurrentY = 0;
+let isDragging = false;
+
+// Canvas
+const canvas = document.getElementById('board-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width  = TOTAL * CS;
+canvas.height = TOTAL * CS;
+
+// ═══════════════════════════════════════════════════════
+//  BOARD HELPERS
+// ═══════════════════════════════════════════════════════
+
+function initBoard() {
+  board = [];
+  for (let r = 0; r < N; r++) {
+    board[r] = new Array(N).fill(EMPTY);
+  }
+}
+
+function inBounds(r, c) {
+  return r >= 0 && r < N && c >= 0 && c < N;
+}
+
+// Toroidal neighbour (wraps around)
+function toroidalNeighbours(r, c) {
+  return [
+    [(r - 1 + N) % N, c],
+    [(r + 1) % N, c],
+    [r, (c - 1 + N) % N],
+    [r, (c + 1) % N],
+  ];
+}
+
+// 3×3 neighbourhood (toroidal), excluding center
+function neighbours8(r, c) {
+  const res = [];
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      res.push([(r + dr + N) % N, (c + dc + N) % N]);
+    }
+  }
+  return res;
+}
+
+// ═══════════════════════════════════════════════════════
+//  EATING RULE (chain reaction)
+// ═══════════════════════════════════════════════════════
+
+function applyEating(attackerPlayer) {
+  const defenderPlayer = attackerPlayer === P1 ? P2 : P1;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    // scan top-left to bottom-right
+    for (let r = 0; r < N; r++) {
+      for (let c = 0; c < N; c++) {
+        if (board[r][c] !== defenderPlayer) continue;
+        const nbrs = neighbours8(r, c);
+        const attackCount = nbrs.filter(([nr, nc]) => board[nr][nc] === attackerPlayer).length;
+        if (attackCount >= 5) {
+          board[r][c] = attackerPlayer;
+          changed = true;
+        }
+      }
+    }
+  }
+}
+
+// After any action by a player, run eating for BOTH directions:
+// attacker = the player who just moved (their pieces eat opponent's)
+function runEating(actingPlayer) {
+  applyEating(actingPlayer);
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDERING
+// ═══════════════════════════════════════════════════════
+
+function cellColor(owner) {
+  if (owner === P1) return '#1a1a2e';   // black pieces
+  if (owner === P2) return '#e8f4f8';   // white pieces
+  return null;
+}
+
+function drawBoard() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Background
+  ctx.fillStyle = '#060a12';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Precompute valid move targets (main-board coords) if in move mode
+  let validMovesSet = new Set();
+  if (mode === 'move' && moveSrc) {
+    for (const [vr, vc] of getValidMoves(moveSrc.r, moveSrc.c)) {
+      validMovesSet.add(`${vr},${vc}`);
+    }
+  }
+
+  // ── Draw extra (perimeter) cells ──
+  for (let row = 0; row < TOTAL; row++) {
+    for (let col = 0; col < TOTAL; col++) {
+      const isMain = (row >= 1 && row <= N && col >= 1 && col <= N);
+      if (isMain) continue;
+      const x = col * CS, y = row * CS;
+
+      // Check if this perimeter cell maps to a valid move target
+      const [mr, mc] = perimToMain(row, col);
+      const isValidDrop = mr !== null && validMovesSet.has(`${mr},${mc}`) && board[mr][mc] === EMPTY;
+      const isSrcGhost  = mr !== null && moveSrc && moveSrc.r === mr && moveSrc.c === mc;
+
+      let bg = '#0d1117';
+      if (isValidDrop) bg = '#002a3a';
+      if (isSrcGhost && isDragging) bg = '#0a1a2a';
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(x + 1, y + 1, CS - 2, CS - 2);
+      ctx.strokeStyle = isValidDrop ? '#00d4ff55' : '#131d2e';
+      ctx.lineWidth = isValidDrop ? 2 : 1;
+      ctx.strokeRect(x + 0.5, y + 0.5, CS - 1, CS - 1);
+
+      // Draw mirror piece (skip source if dragging)
+      if (mr !== null && inBounds(mr, mc) && board[mr][mc] !== EMPTY) {
+        const isSrc = isDragging && dragPiece && dragPiece.r === mr && dragPiece.c === mc;
+        if (!isSrc) drawPiece(ctx, x, y, board[mr][mc], true);
+      }
+
+      // Arrow indicator on valid perimeter drop targets
+      if (isValidDrop) {
+        ctx.fillStyle = '#00d4ff88';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('→', x + CS/2, y + CS/2);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+      }
+    }
+  }
+
+  // ── Draw main cells ──
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const x = (c + 1) * CS;
+      const y = (r + 1) * CS;
+      const isHover   = hoveredMain && hoveredMain.r === r && hoveredMain.c === c;
+      const isSrcMove = moveSrc && moveSrc.r === r && moveSrc.c === c;
+      const isReplSel = replaceSelected.some(p => p.r === r && p.c === c);
+      const isValid   = validMovesSet.has(`${r},${c}`) && board[r][c] === EMPTY;
+
+      // Cell bg
+      let bg = '#111827';
+      if (isHover && mode === 'put' && board[r][c] === EMPTY) bg = '#1e3a5f';
+      if (isHover && mode === 'move' && !moveSrc && board[r][c] === P1) bg = '#1a2a3a';
+      if (isSrcMove) bg = '#0a2040';
+      if (isReplSel) bg = '#2a0a20';
+      if (isValid) bg = '#002a3a';
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(x + 1, y + 1, CS - 2, CS - 2);
+
+      // Grid line
+      ctx.strokeStyle = '#1a2a3a';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x + 0.5, y + 0.5, CS - 1, CS - 1);
+
+      // Piece (skip if being dragged from this cell)
+      const isDragSrc = isDragging && dragPiece && dragPiece.r === r && dragPiece.c === c;
+      if (!isDragSrc && board[r][c] !== EMPTY) {
+        drawPiece(ctx, x, y, board[r][c], false);
+      }
+
+      // Highlight valid move target border
+      if (isValid) {
+        ctx.strokeStyle = '#00d4ffaa';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x + 1, y + 1, CS - 2, CS - 2);
+      }
+
+      // Coordinate label (subtle)
+      if (board[r][c] === EMPTY && !isValid) {
+        ctx.fillStyle = '#1a2a3a';
+        ctx.font = '9px Share Tech Mono';
+        ctx.fillText(`${r * N + c + 1}`, x + 3, y + 11);
+      }
+    }
+  }
+
+  // ── Drag ghost ──
+  if (isDragging && dragPiece) {
+    drawPiece(ctx, dragCurrentX - CS/2, dragCurrentY - CS/2, P1, false, true);
+  }
+
+  // ── Border accent ──
+  ctx.strokeStyle = '#1e3a5f';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(CS - 1, CS - 1, N * CS + 2, N * CS + 2);
+}
+
+function drawPiece(ctx, x, y, owner, ghost, dragging) {
+  const cx = x + CS / 2;
+  const cy = y + CS / 2;
+  const r  = CS * 0.33;
+
+  if (ghost) {
+    ctx.globalAlpha = 0.45;
+  } else if (dragging) {
+    ctx.globalAlpha = 0.85;
+  }
+
+  if (owner === P1) {
+    // Black piece on main board; ghost = grey on perimeter
+    const innerColor = ghost ? '#666677' : '#2a2a3e';
+    const outerColor = ghost ? '#333344' : '#0a0a14';
+    const grad = ctx.createRadialGradient(cx - r*0.3, cy - r*0.3, r*0.1, cx, cy, r);
+    grad.addColorStop(0, innerColor);
+    grad.addColorStop(1, outerColor);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+    if (!ghost) {
+      ctx.shadowColor = '#00d4ff';
+      ctx.shadowBlur = 6;
+      ctx.strokeStyle = '#00d4ffaa';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    } else {
+      ctx.strokeStyle = '#55556688';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  } else {
+    // White piece on main board; ghost = light grey on perimeter
+    const innerColor = ghost ? '#cccccc' : '#ffffff';
+    const outerColor = ghost ? '#999999' : '#c0d8e8';
+    const grad = ctx.createRadialGradient(cx - r*0.3, cy - r*0.3, r*0.1, cx, cy, r);
+    grad.addColorStop(0, innerColor);
+    grad.addColorStop(1, outerColor);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+    if (!ghost) {
+      ctx.shadowColor = '#ff6b35';
+      ctx.shadowBlur = 6;
+      ctx.strokeStyle = '#ff6b35aa';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    } else {
+      ctx.strokeStyle = '#aaaaaa88';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+// Convert perimeter (canvas row/col) → main board [r, c]
+// Canvas row/col: 0..TOTAL-1, where main is rows 1..N, cols 1..N
+function perimToMain(row, col) {
+  // Top row (row=0): mirrors bottom main row (N-1)
+  // Bottom row (row=N+1): mirrors top main row (0)
+  // Left col (col=0): mirrors right main col (N-1)
+  // Right col (col=N+1): mirrors left main col (0)
+  const isTop    = row === 0;
+  const isBottom = row === N + 1;
+  const isLeft   = col === 0;
+  const isRight  = col === N + 1;
+
+  let mr = null, mc = null;
+  if (isTop && !isLeft && !isRight)    { mr = N - 1; mc = col - 1; }
+  if (isBottom && !isLeft && !isRight) { mr = 0;     mc = col - 1; }
+  if (isLeft && !isTop && !isBottom)   { mr = row - 1; mc = N - 1; }
+  if (isRight && !isTop && !isBottom)  { mr = row - 1; mc = 0;     }
+  // Corners
+  if (isTop && isLeft)     { mr = N - 1; mc = N - 1; }
+  if (isTop && isRight)    { mr = N - 1; mc = 0; }
+  if (isBottom && isLeft)  { mr = 0;     mc = N - 1; }
+  if (isBottom && isRight) { mr = 0;     mc = 0; }
+
+  return [mr, mc];
+}
+
+// ═══════════════════════════════════════════════════════
+//  HOVER TRACKING
+// ═══════════════════════════════════════════════════════
+
+let hoveredMain = null;
+
+// Convert canvas pixel → main board {r,c}, returns null if outside main field
+function canvasToMain(ex, ey) {
+  const rect = canvas.getBoundingClientRect();
+  const x = ex - rect.left;
+  const y = ey - rect.top;
+  const col = Math.floor(x / CS) - 1;
+  const row = Math.floor(y / CS) - 1;
+  if (col >= 0 && col < N && row >= 0 && row < N) return { r: row, c: col };
+  return null;
+}
+
+// Convert canvas pixel → full grid cell {gridRow, gridCol} (0..TOTAL-1)
+// Used for detecting clicks on perimeter ghost pieces
+function canvasToGrid(ex, ey) {
+  const rect = canvas.getBoundingClientRect();
+  const x = ex - rect.left;
+  const y = ey - rect.top;
+  const col = Math.floor(x / CS);
+  const row = Math.floor(y / CS);
+  if (col >= 0 && col < TOTAL && row >= 0 && row < TOTAL) return { row, col };
+  return null;
+}
+
+// Given a grid cell (including perimeter), return the main-board {r,c} it maps to.
+// For main cells: gridRow 1..N → r = gridRow-1, gridCol 1..N → c = gridCol-1
+// For perimeter cells: use perimToMain mapping
+function gridToMainRC(gridRow, gridCol) {
+  const isMainRow = gridRow >= 1 && gridRow <= N;
+  const isMainCol = gridCol >= 1 && gridCol <= N;
+  if (isMainRow && isMainCol) return { r: gridRow - 1, c: gridCol - 1 };
+  const [mr, mc] = perimToMain(gridRow, gridCol);
+  if (mr !== null) return { r: mr, c: mc };
+  return null;
+}
+
+canvas.addEventListener('mousemove', e => {
+  if (!gameRunning) return;
+  hoveredMain = canvasToMain(e.clientX, e.clientY);
+  if (isDragging) {
+    const rect = canvas.getBoundingClientRect();
+    dragCurrentX = e.clientX - rect.left;
+    dragCurrentY = e.clientY - rect.top;
+  }
+  drawBoard();
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoveredMain = null;
+  drawBoard();
+});
+
+// ═══════════════════════════════════════════════════════
+//  MOUSE INTERACTIONS
+// ═══════════════════════════════════════════════════════
+
+canvas.addEventListener('mousedown', e => {
+  if (!gameRunning || currentPlayer !== 1) return;
+
+  if (mode === 'move' && !moveSrc && moveLeft > 0) {
+    // Try main board first
+    const cell = canvasToMain(e.clientX, e.clientY);
+    if (cell && board[cell.r][cell.c] === P1) {
+      const validMoves = getValidMoves(cell.r, cell.c);
+      if (validMoves.length > 0) {
+        dragPiece = { r: cell.r, c: cell.c };
+        const rect = canvas.getBoundingClientRect();
+        dragCurrentX = e.clientX - rect.left;
+        dragCurrentY = e.clientY - rect.top;
+        isDragging = true;
+        moveSrc = { r: cell.r, c: cell.c };
+        drawBoard();
+        return;
+      }
+    }
+    // Try perimeter ghost: clicking a ghost piece starts drag on its main-board source
+    const grid = canvasToGrid(e.clientX, e.clientY);
+    if (grid) {
+      const mainRC = gridToMainRC(grid.row, grid.col);
+      // Only accept if it's actually a perimeter cell (not main board again)
+      const isPerim = !(grid.row >= 1 && grid.row <= N && grid.col >= 1 && grid.col <= N);
+      if (isPerim && mainRC && board[mainRC.r][mainRC.c] === P1) {
+        const validMoves = getValidMoves(mainRC.r, mainRC.c);
+        if (validMoves.length > 0) {
+          dragPiece = { r: mainRC.r, c: mainRC.c };
+          const rect = canvas.getBoundingClientRect();
+          dragCurrentX = e.clientX - rect.left;
+          dragCurrentY = e.clientY - rect.top;
+          isDragging = true;
+          moveSrc = { r: mainRC.r, c: mainRC.c };
+          drawBoard();
+        }
+      }
+    }
+  }
+});
+
+canvas.addEventListener('mouseup', e => {
+  if (!isDragging || !dragPiece) return;
+  isDragging = false;
+
+  const validMoves = getValidMoves(dragPiece.r, dragPiece.c);
+
+  // Helper: resolve drop target from mouse position
+  // Accepts both main board and perimeter cells (perimeter maps toroidally to main)
+  let destRC = null;
+
+  const mainCell = canvasToMain(e.clientX, e.clientY);
+  if (mainCell) {
+    destRC = mainCell;
+  } else {
+    // Check perimeter
+    const grid = canvasToGrid(e.clientX, e.clientY);
+    if (grid) {
+      const isPerim = !(grid.row >= 1 && grid.row <= N && grid.col >= 1 && grid.col <= N);
+      if (isPerim) {
+        const mainRC = gridToMainRC(grid.row, grid.col);
+        if (mainRC) destRC = mainRC;
+      }
+    }
+  }
+
+  if (destRC && board[destRC.r][destRC.c] === EMPTY) {
+    if (validMoves.some(([vr, vc]) => vr === destRC.r && vc === destRC.c)) {
+      // Execute toroidal move
+      board[destRC.r][destRC.c] = P1;
+      board[dragPiece.r][dragPiece.c] = EMPTY;
+      moveLeft--;
+      moveSrc = null;
+      dragPiece = null;
+      runEating(P1);
+      updateUI();
+      checkGameEnd();
+      drawBoard();
+      setStatus(`Move: piece moved. Remaining moves: ${moveLeft}`);
+      return;
+    }
+  }
+
+  // Drop cancelled or invalid — reset
+  moveSrc = null;
+  dragPiece = null;
+  drawBoard();
+});
+
+canvas.addEventListener('click', e => {
+  if (!gameRunning || currentPlayer !== 1) return;
+  if (isDragging) return;
+  const cell = canvasToMain(e.clientX, e.clientY);
+  if (!cell) return;
+
+  if (mode === 'put') {
+    handlePut(cell);
+  } else if (mode === 'replace') {
+    handleReplace(cell);
+  }
+});
+
+function handlePut(cell) {
+  if (putLeft <= 0) { setStatus('Put: limit reached (0 remaining).'); return; }
+  if (board[cell.r][cell.c] !== EMPTY) { setStatus('Put: cell is occupied.'); return; }
+  board[cell.r][cell.c] = P1;
+  putLeft--;
+  runEating(P1);
+  updateUI();
+  checkGameEnd();
+  drawBoard();
+  setStatus(`Put: piece placed at [${cell.r},${cell.c}]. Remaining: ${putLeft}`);
+  if (putLeft === 0) deactivateMode();
+}
+
+function handleReplace(cell) {
+  if (replaceLeft <= 0) { setStatus('Replace: already used this turn.'); return; }
+
+  if (!replaceWaitDest) {
+    // Selecting pieces to remove
+    if (board[cell.r][cell.c] !== P1) { setStatus('Replace: click one of your own pieces.'); return; }
+    const already = replaceSelected.findIndex(p => p.r === cell.r && p.c === cell.c);
+    if (already >= 0) {
+      replaceSelected.splice(already, 1);
+    setStatus(`Replace: deselected [${cell.r},${cell.c}]. Selected: ${replaceSelected.length}/2`);
+    } else if (replaceSelected.length < 2) {
+      replaceSelected.push({ r: cell.r, c: cell.c });
+      if (replaceSelected.length === 2) {
+        replaceWaitDest = true;
+        setStatus('Replace: 2 pieces selected. Now click an empty cell to place the new piece.');
+      } else {
+        setStatus(`Replace: selected ${replaceSelected.length}/2. Click another one of your pieces.`);
+      }
+    }
+  } else {
+    // Place new piece
+    if (board[cell.r][cell.c] !== EMPTY) { setStatus('Replace: cell is occupied. Choose an empty cell.'); return; }
+    // Remove the two selected pieces
+    for (const p of replaceSelected) board[p.r][p.c] = EMPTY;
+    board[cell.r][cell.c] = P1;
+    replaceLeft--;
+    replaceSelected = [];
+    replaceWaitDest = false;
+    runEating(P1);
+    updateUI();
+    checkGameEnd();
+    drawBoard();
+    setStatus(`Replace: done. New piece placed at [${cell.r},${cell.c}].`);
+    deactivateMode();
+  }
+  drawBoard();
+}
+
+// ═══════════════════════════════════════════════════════
+//  MOVE HELPERS
+// ═══════════════════════════════════════════════════════
+
+function getValidMoves(r, c) {
+  // Adjacent (toroidal) empty cells
+  return toroidalNeighbours(r, c).filter(([nr, nc]) => board[nr][nc] === EMPTY);
+}
+
+// ═══════════════════════════════════════════════════════
+//  UI HELPERS
+// ═══════════════════════════════════════════════════════
+
+function setStatus(msg) {
+  document.getElementById('status').textContent = msg;
+}
+
+function updateUI() {
+  // Scores
+  let s1 = 0, s2 = 0;
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++) {
+      if (board[r][c] === P1) s1++;
+      if (board[r][c] === P2) s2++;
+    }
+  document.getElementById('sc1').textContent = s1;
+  document.getElementById('sc2').textContent = s2;
+
+  // Counters
+  const p = document.getElementById('cnt-put');
+  const m = document.getElementById('cnt-move');
+  const r = document.getElementById('cnt-replace');
+  p.textContent = putLeft;
+  m.textContent = moveLeft;
+  r.textContent = replaceLeft;
+  p.className = 'action-count' + (putLeft === 0 ? ' zero' : '');
+  m.className = 'action-count' + (moveLeft === 0 ? ' zero' : '');
+  r.className = 'action-count' + (replaceLeft === 0 ? ' zero' : '');
+
+  // Turn indicator
+  const ind = document.getElementById('turn-ind');
+  if (!gameRunning) {
+    ind.className = 'turn-indicator turn-none';
+    ind.textContent = 'Game not running';
+  } else if (currentPlayer === 1) {
+    ind.className = 'turn-indicator turn-p1';
+    ind.textContent = '● Your Turn (black)';
+  } else {
+    ind.className = 'turn-indicator turn-p2';
+    ind.textContent = '● AI Turn (white)';
+  }
+
+  // Buttons
+  const isP1 = gameRunning && currentPlayer === 1;
+  document.getElementById('btn-put').disabled     = !isP1 || putLeft === 0;
+  document.getElementById('btn-move').disabled    = !isP1 || moveLeft === 0;
+  document.getElementById('btn-replace').disabled = !isP1 || replaceLeft === 0;
+  document.getElementById('btn-end-turn').disabled = !isP1;
+  document.getElementById('btn-end-game').disabled = !gameRunning;
+}
+
+function deactivateMode() {
+  mode = null;
+  moveSrc = null;
+  replaceSelected = [];
+  replaceWaitDest = false;
+  document.getElementById('btn-put').classList.remove('active');
+  document.getElementById('btn-move').classList.remove('active');
+  document.getElementById('btn-replace').classList.remove('active');
+}
+
+function activateMode(m) {
+  deactivateMode();
+  mode = m;
+  document.getElementById('btn-' + m).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+//  GAME FLOW
+// ═══════════════════════════════════════════════════════
+
+function startGame() {
+  initBoard();
+  gameRunning = true;
+  currentPlayer = 1;
+  putLeft = 2; moveLeft = 2; replaceLeft = 1;
+  mode = null;
+  moveSrc = null;
+  replaceSelected = [];
+  replaceWaitDest = false;
+  isDragging = false;
+  dragPiece = null;
+  document.getElementById('btn-start').disabled = true;
+  updateUI();
+  drawBoard();
+  setStatus('Game started! Your turn. Choose an action: Put, Move, or Replace.');
+}
+
+function endGame() {
+  gameRunning = false;
+  currentPlayer = 0;
+  initBoard();
+  mode = null;
+  replaceSelected = [];
+  replaceWaitDest = false;
+  isDragging = false;
+  dragPiece = null;
+  document.getElementById('btn-start').disabled = false;
+  updateUI();
+  drawBoard();
+  setStatus('Game ended. Press "Start Game" for a new match.');
+}
+
+function endTurn() {
+  if (!gameRunning || currentPlayer !== 1) return;
+  deactivateMode();
+  currentPlayer = 2;
+  updateUI();
+  drawBoard();
+  setStatus('AI is thinking...');
+  // Small delay for UX
+  setTimeout(aiTurn, 400);
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  AI (Player 2) — Greedy Positional Heuristic
+// ═══════════════════════════════════════════════════════
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function emptyCells() {
+  const res = [];
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++)
+      if (board[r][c] === EMPTY) res.push([r, c]);
+  return res;
+}
+
+function piecesOf(player) {
+  const res = [];
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++)
+      if (board[r][c] === player) res.push([r, c]);
+  return res;
+}
+function p2Pieces() { return piecesOf(P2); }
+
+// ── Board snapshot / restore ──
+function snapBoard() {
+  const s = new Int8Array(N * N);
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++)
+      s[r * N + c] = board[r][c];
+  return s;
+}
+function restoreBoard(s) {
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++)
+      board[r][c] = s[r * N + c];
+}
+
+// ── Positional score for a single cell if P2 places there ──
+// Factors:
+//  1. P2 neighbours already present (cluster bonus)
+//  2. P1 neighbours that could be threatened (attack bonus)
+//  3. How many P1 neighbours the new piece adds toward eating threshold (5+)
+//  4. Safety: how many P1 pieces are already around this cell (danger penalty)
+function cellScore(r, c, player) {
+  const opp = player === P2 ? P1 : P2;
+  const nbrs = neighbours8(r, c);
+  const ownNbr = nbrs.filter(([nr, nc]) => board[nr][nc] === player).length;
+  const oppNbr = nbrs.filter(([nr, nc]) => board[nr][nc] === opp).length;
+
+  // How much does placing here increase eating threat on opponent pieces?
+  let eatThreat = 0;
+  for (const [nr, nc] of nbrs) {
+    if (board[nr][nc] === opp) {
+      // Count how many 'player' pieces are already around this opponent piece
+      const alreadyAround = neighbours8(nr, nc).filter(([xr, xc]) => board[xr][xc] === player).length;
+      // Placing at (r,c) would make it alreadyAround+1 — bonus if that hits or approaches 5
+      const after = alreadyAround + 1;
+      if (after >= 5) eatThreat += 30;       // will trigger eating immediately
+      else if (after === 4) eatThreat += 12; // one away from eating
+      else if (after === 3) eatThreat += 4;  // two away
+    }
+  }
+
+  const clusterBonus  = ownNbr * 3;     // reward clustering our pieces
+  const dangerPenalty = oppNbr * 4;     // penalty for placing next to many enemies
+  const attackBonus   = eatThreat;
+
+  return clusterBonus + attackBonus - dangerPenalty;
+}
+
+// ── Safety score for a piece at (r,c): how at-risk is it? ──
+// Returns number of opponent pieces in 3x3 neighbourhood
+function dangerScore(r, c, opp) {
+  return neighbours8(r, c).filter(([nr, nc]) => board[nr][nc] === opp).length;
+}
+
+// ── Simulate placing a piece and return score gain (eating chain included) ──
+function simulatePut(r, c, player) {
+  const snap = snapBoard();
+  board[r][c] = player;
+  runEating(player);
+  let s2 = 0, s1 = 0;
+  for (let rr = 0; rr < N; rr++)
+    for (let cc = 0; cc < N; cc++) {
+      if (board[rr][cc] === P2) s2++;
+      if (board[rr][cc] === P1) s1++;
+    }
+  const gain = player === P2 ? (s2 - s1) : (s1 - s2);
+  restoreBoard(snap);
+  return gain;
+}
+
+// ── PUT: choose the empty cell with highest combined score ──
+function aiPut() {
+  const empty = emptyCells();
+  if (empty.length === 0) return;
+
+  let best = -Infinity, bestCell = null;
+  for (const [r, c] of empty) {
+    // Simulate: place and measure net piece gain after eating chain
+    const simGain = simulatePut(r, c, P2) * 10;
+    const posScore = cellScore(r, c, P2);
+    const total = simGain + posScore;
+    if (total > best || (total === best && Math.random() < 0.2)) {
+      best = total; bestCell = [r, c];
+    }
+  }
+  if (!bestCell) bestCell = rand(empty);
+  board[bestCell[0]][bestCell[1]] = P2;
+  runEating(P2);
+}
+
+// ── MOVE: pick the move that maximises position score ──
+function aiMove() {
+  const pieces = piecesOf(P2);
+  if (pieces.length === 0) return;
+
+  let best = -Infinity, bestFrom = null, bestTo = null;
+
+  for (const [r, c] of pieces) {
+    const moves = getValidMoves(r, c);
+    for (const [nr, nc] of moves) {
+      // Simulate the move
+      const snap = snapBoard();
+      board[nr][nc] = P2;
+      board[r][c] = EMPTY;
+      runEating(P2);
+
+      // Score: net piece count + positional quality of destination
+      let s2 = 0, s1 = 0;
+      for (let rr = 0; rr < N; rr++)
+        for (let cc = 0; cc < N; cc++) {
+          if (board[rr][cc] === P2) s2++;
+          if (board[rr][cc] === P1) s1++;
+        }
+      const netPieces = (s2 - s1) * 10;
+
+      // Additional: danger at destination vs source
+      const srcDanger  = dangerScore(r, c, P1);    // how dangerous was old spot
+      const destDanger = dangerScore(nr, nc, P1);  // how dangerous is new spot
+      const safetyGain = (srcDanger - destDanger) * 3;
+
+      // Bonus: destination improves eating threat on neighbours
+      const posBonus = cellScore(nr, nc, P2);
+
+      const total = netPieces + safetyGain + posBonus;
+      restoreBoard(snap);
+
+      if (total > best) { best = total; bestFrom = [r, c]; bestTo = [nr, nc]; }
+    }
+  }
+
+  if (!bestFrom) return;
+  board[bestTo[0]][bestTo[1]] = P2;
+  board[bestFrom[0]][bestFrom[1]] = EMPTY;
+  runEating(P2);
+}
+
+// ── REPLACE: only when a piece is in danger (>=3 enemies nearby) ──
+// Remove the two most-threatened pieces, place new piece at best cell.
+function aiReplace() {
+  const pieces = piecesOf(P2);
+  if (pieces.length < 2) return;
+
+  // Score each P2 piece by how threatened it is
+  const scored = pieces.map(([r, c]) => ({
+    r, c, danger: dangerScore(r, c, P1)
+  })).sort((a, b) => b.danger - a.danger);
+
+  // Only proceed if the most-threatened piece has >= 3 enemies around it
+  if (scored[0].danger < 3) return;
+
+  // Pick the two most-threatened to remove
+  const remove1 = scored[0];
+  const remove2 = scored[1];
+
+  // Find best destination: highest simulatePut score excluding the two removed cells
+  const snap = snapBoard();
+  board[remove1.r][remove1.c] = EMPTY;
+  board[remove2.r][remove2.c] = EMPTY;
+
+  const empty = emptyCells();
+  if (empty.length === 0) { restoreBoard(snap); return; }
+
+  let best = -Infinity, bestCell = null;
+  for (const [r, c] of empty) {
+    const simGain = simulatePut(r, c, P2) * 10;
+    const posScore = cellScore(r, c, P2);
+    const total = simGain + posScore;
+    if (total > best) { best = total; bestCell = [r, c]; }
+  }
+  if (!bestCell) bestCell = rand(empty);
+
+  board[bestCell[0]][bestCell[1]] = P2;
+  runEating(P2);
+  // (remove1 and remove2 are already cleared from the board)
+}
+
+// ── Main AI turn: Put×2, Move×2, Replace×1 ──
+function aiTurn() {
+  aiPut();
+  aiPut();
+  aiMove();
+  aiMove();
+  aiReplace();
+
+  currentPlayer = 1;
+  putLeft = 2; moveLeft = 2; replaceLeft = 1;
+  updateUI();
+  checkGameEnd();
+  drawBoard();
+  setStatus('AI turn done. Your turn — choose Put, Move, or Replace.');
+}
+
+//  GAME END CHECK
+// ═══════════════════════════════════════════════════════
+
+function countPieces() {
+  let s1 = 0, s2 = 0;
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++) {
+      if (board[r][c] === P1) s1++;
+      if (board[r][c] === P2) s2++;
+    }
+  return { s1, s2 };
+}
+
+function canAnyoneMove() {
+  // Check if any player can perform any action (board not full = can always Put if < 2×2=100 full)
+  const { s1, s2 } = countPieces();
+  const total = N * N;
+  if (s1 + s2 < total) return true; // someone can put
+  // Check moves
+  for (let r = 0; r < N; r++)
+    for (let c = 0; c < N; c++) {
+      if (board[r][c] !== EMPTY) {
+        if (getValidMoves(r, c).length > 0) return true;
+      }
+    }
+  return false;
+}
+
+function checkGameEnd() {
+  if (!gameRunning) return;
+  const { s1, s2 } = countPieces();
+  const total = N * N;
+
+  // Board full
+  if (s1 + s2 >= total || !canAnyoneMove()) {
+    showWinner(s1, s2);
+    return;
+  }
+}
+
+function showWinner(s1, s2) {
+  gameRunning = false;
+  updateUI();
+  const overlay = document.getElementById('winner-overlay');
+  const title   = document.getElementById('winner-title');
+  const sub     = document.getElementById('winner-sub');
+  if (s1 > s2) {
+    title.textContent = '🏆 Victory!';
+    title.style.color = 'var(--accent)';
+    sub.textContent = `You (black) won: ${s1} vs ${s2}`;
+  } else if (s2 > s1) {
+    title.textContent = '☠ Defeat';
+    title.style.color = 'var(--accent2)';
+    sub.textContent = `AI (white) won: ${s2} vs ${s1}`;
+  } else {
+    title.textContent = '⚖ Draw';
+    title.style.color = 'var(--yellow)';
+    sub.textContent = `Equal score: ${s1} vs ${s2}`;
+  }
+  overlay.classList.add('show');
+}
+
+function closeWinner() {
+  document.getElementById('winner-overlay').classList.remove('show');
+  endGame();
+}
+
+// ═══════════════════════════════════════════════════════
+//  BUTTON WIRING
+// ═══════════════════════════════════════════════════════
+
+document.getElementById('btn-start').addEventListener('click', startGame);
+document.getElementById('btn-end-game').addEventListener('click', endGame);
+document.getElementById('btn-end-turn').addEventListener('click', endTurn);
+
+document.getElementById('btn-put').addEventListener('click', () => {
+  if (!gameRunning || currentPlayer !== 1 || putLeft === 0) return;
+  activateMode('put');
+  setStatus(`Put active. Click an empty cell to place your piece. Remaining: ${putLeft}`);
+});
+
+document.getElementById('btn-move').addEventListener('click', () => {
+  if (!gameRunning || currentPlayer !== 1 || moveLeft === 0) return;
+  activateMode('move');
+  setStatus(`Move active. Drag your black piece to an adjacent empty cell. Remaining: ${moveLeft}`);
+});
+
+document.getElementById('btn-replace').addEventListener('click', () => {
+  if (!gameRunning || currentPlayer !== 1 || replaceLeft === 0) return;
+  activateMode('replace');
+  replaceSelected = [];
+  replaceWaitDest = false;
+  setStatus('Replace active. Click 2 of your pieces to remove, then click an empty cell to place new piece.');
+});
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+
+initBoard();
+updateUI();
+drawBoard();
+</script>
+</body>
+</html>
