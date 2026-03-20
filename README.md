@@ -1,119 +1,172 @@
 # CTOR‑H‑AI  
-**Human‑versus‑AI Gameplay Engine (CTOR‑Labs)**
-
-CTOR‑H‑AI is the official repository for the *human‑versus‑AI* gameplay mode within the CTOR‑Labs ecosystem.  
-It consolidates multiple platform‑specific implementations of the H‑AI interaction model, all built on top of the canonical CTOR architecture.
-
----
-
-## 🚀 Purpose
-
-This repository serves as the central hub for all **H‑AI** implementations, including:
-
-- Web interfaces (Vercel, Comet, Replit)
-- Experimental UI prototypes
-- Research‑driven interaction models
-- Future mobile or hybrid versions
-
-Each implementation lives in its own branch while sharing the same conceptual foundation.
+### Research & Development of AI for CTOR  
+Version: v2.1  
+Status: Active  
+Maintainer: Vladimir (CTOR‑Labs)
 
 ---
 
-## 🌿 Branch Structure
+## Overview
+CTOR‑H‑AI — это исследовательский модуль искусственного интеллекта для игры **CTOR**.  
+Задача ветки — разработка, тестирование и сравнение различных подходов к оценке позиции и выбору хода.
 
-CTOR‑H‑AI contains multiple independent platform implementations:
-
-### **`comet` — Primary Branch**
-The current reference implementation developed using Comet.  
-Represents the baseline version for gameplay, testing, and future extensions.
-
-### **`vercel` — Vercel Implementation**
-Imported from the former *AIvsH‑Vercel* repository.  
-Contains a Next.js / TypeScript interface and server logic optimized for Vercel deployment.
-
-Additional branches will be added as new platform versions are developed.
+Ветка **не использует систему агентов** и **не зависит от Python**.  
+Всё реализовано в **JavaScript**, чтобы AI можно было подключать напрямую к браузерному движку CTOR.
 
 ---
 
-## 🧠 CTOR Architecture
-
-CTOR‑H‑AI is built on top of the canonical CTOR architecture, defined in:
-
-👉 **CTOR‑CORE** (to be added)
-
-The CORE layer provides:
-
-- Game rules and validation
-- Decision‑making logic
-- AI behavior models
-- Canonical specifications
-- Test suites and reference scenarios
-
-CTOR‑H‑AI focuses on:
-
-- User interaction
-- Game loop implementation
-- Visual and UX layers
-- Adaptive difficulty
-- Platform‑specific integration
+## Goals
+- Создать модульную архитектуру AI для CTOR  
+- Поддерживать несколько независимых алгоритмов  
+- Позволить легко подключать AI к UI‑движку  
+- Исследовать сильные и слабые стороны разных подходов  
+- Подготовить базу для будущего обучения и RL  
 
 ---
 
-## 🗂 Planned Branches
+## Tech Stack
+**Основной стек:**
 
-Future implementations will be added as separate branches:
-
-- `copilot`
-- `lovable`
-- `antigravity`
-- `replit`
-- `inception`
-- `local`
-
-Each branch will contain a full platform‑specific version of the H‑AI experience.
+| Компонент | Технология |
+|----------|------------|
+| Язык     | JavaScript (ES6+) |
+| Среда    | Browser / Node |
+| Алгоритмы | Heuristics, Minimax, MCTS, RL (планируется) |
+| Тесты    | Node (опционально) |
 
 ---
 
-## 🧪 Testing
+## Directory Structure
 
-Each branch should include:
-
-- Game loop tests  
-- Rule validation tests  
-- AI behavior tests  
-- UI tests (where applicable)  
-
-Testing ensures consistency across all platform implementations.
-
-You can play one of the versions on our website:
-https://ctorgame.com/ai
----
-
-## 🧭 CTOR‑Labs Ecosystem
-
-- **CTOR‑CORE** — canonical architecture  
-- **CTOR‑H‑AI** — human vs AI (this repository)  
-- **CTOR‑AI‑AI** — AI vs AI  
-- **CTOR‑H‑H** — human vs human  
-- **CTOR‑T‑T** — team vs team  
-
----
-
-## 📜 License
-
-MIT License (modifiable if needed).
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome.  
-Each new implementation should be added as a dedicated branch.
+```
+CTOR-H-AI/
+│
+├── heuristics/          # Эвристические алгоритмы (v2.1)
+│   ├── eval.js
+│   ├── scoring.js
+│   └── simulate.js
+│
+├── minimax/             # Минимакс и альфа-бета (планируется)
+│   ├── minimax.js
+│   ├── alphabeta.js
+│   └── ordering.js
+│
+├── mcts/                # Monte-Carlo Tree Search (планируется)
+│   ├── mcts.js
+│   ├── rollout.js
+│   └── uct.js
+│
+├── rl/                  # Reinforcement Learning (планируется)
+│   ├── qlearning.js
+│   ├── sarsa.js
+│   └── policy.js
+│
+├── utils/               # Общие утилиты
+│   ├── board.js
+│   ├── neighbours.js
+│   └── random.js
+│
+├── ai.js                # Главная точка входа AI
+└── README.md            # Этот документ
+```
 
 ---
 
-## 🧩 About CTOR‑Labs
+## Current Implementation (v2.1)
+На данный момент реализован:
 
-CTOR‑Labs conducts research in collective intelligence, hybrid cognition, and multi‑agent interaction systems.
+### ✔ Heuristic AI (Greedy + Local Simulation)
+- кластеризация своих фишек  
+- давление на фишки игрока  
+- оценка угроз  
+- симуляция Eating  
+- локальная симуляция Put/Move/Replace  
+- выбор лучшего хода по суммарному весу  
 
+Этот AI уже интегрирован в UI‑движок.
+
+---
+
+## Planned Modules
+
+### 🔹 1. Minimax / Alpha‑Beta
+Цель: исследовать глубинный поиск с отсечениями.
+
+План:
+- генерация дерева ходов  
+- эвристическая оценка позиции  
+- отсечения альфа‑бета  
+- упорядочивание ходов  
+- ограничение глубины  
+
+---
+
+### 🔹 2. Monte‑Carlo Tree Search (MCTS)
+Цель: получить AI, который учится на симуляциях.
+
+План:
+- UCT (Upper Confidence Bound)  
+- rollout‑симуляции  
+- дерево посещений  
+- гибрид с эвристикой  
+
+---
+
+### 🔹 3. Reinforcement Learning (RL)
+Цель: обучаемый AI, который улучшает стратегию через опыт.
+
+План:
+- Q‑learning  
+- SARSA  
+- Policy‑gradient (в будущем)  
+- обучение на самоигре  
+
+---
+
+## Integration with CTOR Engine
+AI‑ветка **не зависит от Python**
+
+Связь происходит через простой интерфейс:
+
+```js
+import { aiTurn } from './ai.js';
+
+const newBoard = aiTurn(currentBoard);
+```
+
+Это позволяет:
+- развивать AI независимо  
+- тестировать AI в Node  
+- подключать разные алгоритмы к UI  
+
+---
+
+## Roadmap
+
+### v2.2
+- вынести эвристику в отдельные модули  
+- добавить тесты для heuristics  
+
+### v2.3
+- реализовать базовый minimax  
+- добавить альфа‑бета  
+
+### v2.4
+- реализовать MCTS (rollout + UCT)  
+
+### v2.5+
+- начать эксперименты с RL  
+- добавить обучаемые политики  
+
+---
+
+## Notes
+- Агентная система была удалена как избыточная  
+- Ветка H‑AI теперь чистая, модульная и расширяемая  
+- Все алгоритмы независимы и могут подключаться к UI по необходимости  
+
+---
+
+## License
+MIT (или другая по выбору)
 
