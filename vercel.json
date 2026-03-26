@@ -1,0 +1,8 @@
+{
+  "builds": [
+    { "src": "mvp/replit/index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "mvp/replit/$1" }
+  ]
+}
