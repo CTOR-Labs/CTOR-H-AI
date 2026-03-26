@@ -23,6 +23,8 @@ const TOTAL = N + 2;
 
 const canvas = document.getElementById('board-canvas');
 const ctx = canvas.getContext('2d');
+
+// IMPORTANT: set canvas size BEFORE drawing
 canvas.width = TOTAL * CS;
 canvas.height = TOTAL * CS;
 
@@ -38,37 +40,6 @@ function drawPiece(ctx, x, y, owner) {
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.fill();
-}
-
-function perimToMain(row, col) {
-    const isTop = row === 0;
-    const isBottom = row === N + 1;
-    const isLeft = col === 0;
-    const isRight = col === N + 1;
-
-    let mr = null, mc = null;
-
-    if (isTop && !isLeft && !isRight) mr = N - 1, mc = col - 1;
-    if (isBottom && !isLeft && !isRight) mr = 0, mc = col - 1;
-    if (isLeft && !isTop && !isBottom) mr = row - 1, mc = N - 1;
-    if (isRight && !isTop && !isBottom) mr = row - 1, mc = 0;
-
-    if (isTop && isLeft) mr = N - 1, mc = N - 1;
-    if (isTop && isRight) mr = N - 1, mc = 0;
-    if (isBottom && isLeft) mr = 0, mc = N - 1;
-    if (isBottom && isRight) mr = 0, mc = 0;
-
-    return [mr, mc];
-}
-
-function canvasToMain(ex, ey) {
-    const rect = canvas.getBoundingClientRect();
-    const x = ex - rect.left;
-    const y = ey - rect.top;
-    const col = Math.floor(x / CS) - 1;
-    const row = Math.floor(y / CS) - 1;
-    if (col >= 0 && col < N && row >= 0 && row < N) return { r: row, c: col };
-    return null;
 }
 
 function drawBoard() {
@@ -168,6 +139,7 @@ document.getElementById('btn-replace').onclick = () => {
     setStatus("Select 2 pieces to replace.");
 };
 
+// FIXED: correct ID for End Turn button
 document.getElementById('btn-end-turn').onclick = async () => {
     if (CTOR.currentPlayer !== P1) return;
 
