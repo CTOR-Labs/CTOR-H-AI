@@ -98,3 +98,80 @@ function setStatus(msg) {
 
 function updateUI() {
     const { s1, s2 } = CT
+// -----------------------------
+// UI helpers
+// -----------------------------
+function setStatus(msg) {
+    document.getElementById('status').textContent = msg;
+}
+
+function updateUI() {
+    const { s1, s2 } = CT;
+
+    // Update score
+    document.getElementById('score-you').textContent = s1;
+    document.getElementById('score-ai').textContent = s2;
+
+    // Update turn counters
+    document.getElementById('put-count').textContent = CT.turn.put;
+    document.getElementById('move-count').textContent = CT.turn.move;
+    document.getElementById('replace-count').textContent = CT.turn.replace;
+
+    // Status message
+    if (CT.isAITurn) {
+        setStatus("AI is thinking...");
+    } else {
+        setStatus("Your turn");
+    }
+}
+
+// -----------------------------
+// Game start
+// -----------------------------
+function startGame() {
+    CT.reset();
+    CT.drawBoard();
+    updateUI();
+    setStatus("Game started. Your move.");
+}
+
+// -----------------------------
+// Button bindings
+// -----------------------------
+document.getElementById('btn-start').onclick = () => {
+    startGame();
+};
+
+document.getElementById('btn-put').onclick = () => {
+    CT.setMode("put");
+    setStatus("Place a piece.");
+};
+
+document.getElementById('btn-move').onclick = () => {
+    CT.setMode("move");
+    setStatus("Move a piece.");
+};
+
+document.getElementById('btn-replace').onclick = () => {
+    CT.setMode("replace");
+    setStatus("Select 2 pieces to replace.");
+};
+
+document.getElementById('btn-end').onclick = async () => {
+    if (!CT.isAITurn) {
+        CT.endTurn();
+        updateUI();
+        setStatus("AI is thinking...");
+
+        await AI.makeMove(CT);
+        CT.endTurn();
+        updateUI();
+        setStatus("Your turn");
+    }
+};
+
+// -----------------------------
+// Initial
+// -----------------------------
+setStatus("Welcome to CTOR. Press Start Game.");
+
