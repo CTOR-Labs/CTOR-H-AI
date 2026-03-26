@@ -1,1 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --bg: #0a0e1a;
+  --panel: #0f1629;
+  --border: #1e3a5f;
+  --accent: #00d4ff;
+  --accent2: #ff6b35;
+  --white-piece: #e8f4f8;
+  --black-piece: #1a1a2e;
+  --cell-main: #111827;
+  --cell-extra: #0d1117;
+  --cell-hover: #1e3a5f;
+  --text: #a8c5da;
+  --text-bright: #e2f0f7;
+  --green: #00ff88;
+  --red: #ff3366;
+  --yellow: #ffd700;
+  --glow-cyan: 0 0 10px #00d4ff88, 0 0 20px #00d4ff44;
+  --glow-orange: 0 0 10px #ff6b3588, 0 0 20px #ff6b3544;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, #0a1a3a44 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, #1a0a2e44 0%, transparent 50%);
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: 6px;
+  color: var(--accent);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--text);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.game-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Board column */
+.board-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#board-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+#board-canvas {
+  display: block;
+  cursor: default;
+  image-rendering: pixelated;
+}
+
+/* Side panel */
+.panel {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.card-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* Score */
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.score-label { font-size: 0.7rem; color: var(--text); }
+
+.score-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.score-p1 { color: var(--accent); }
+.score-p2 { color: var(--accent2); }
+
+/* Action counters */
+.action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #1a2a3a;
+}
+
+.action-row:last-child { border-bottom: none; }
+
+.action-name { font-size: 0.7rem; color: var(--text); }
+
+.action-count {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--green);
+  min-width: 20px;
+  text-align: right;
+}
+
+.action-count.zero { color: #333; }
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #00d4ff11;
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #00d4ff22;
+  box-shadow: var(--glow-cyan);
+}
+
+.btn.btn-start {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.btn.btn-start:hover:not(:disabled) {
+  background: #00ff8822;
+  box-shadow: 0 0 10px #00ff8844;
+}
+
+.btn.btn-end-game {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn.btn-end-game:hover:not(:disabled) {
+  background: #ff336622;
+}
+
+.btn.btn-end-turn {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  margin-top: 4px;
+}
+
+.btn.btn-end-turn:hover:not(:disabled) {
+  background: #ffd70022;
+  box-shadow: 0 0 10px #ffd70044;
+}
+
+/* Status */
+#status {
+  font-size: 0.68rem;
+  color: var(--text-bright);
+  line-height: 1.5;
+  min-height: 40px;
+  padding: 8px;
+  background: #060a12;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  word-break: break-word;
+}
+
+/* Turn indicator */
+.turn-indicator {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.turn-p1 {
+  background: #00d4ff18;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.turn-p2 {
+  background: #ff6b3518;
+  border: 1px solid var(--accent2);
+  color: var(--accent2);
+}
+
+.turn-none {
+  background: #1a1a2e;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* Winner overlay */
+#winner-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000cc;
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+
+#winner-overlay.show { display: flex; }
+
+.winner-box {
+  background: var(--panel);
+  border: 2px solid var(--accent);
+  box-shadow: var(--glow-cyan);
+  border-radius: 10px;
+  padding: 40px 60px;
+  text-align: center;
+}
+
+.winner-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.winner-sub {
+  font-size: 0.8rem;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.btn-ok {
+  padding: 10px 30px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--accent);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.btn-ok:hover {
+  background: #00d4ff22;
+}
+
+@media (max-width: 680px) {
+  h1 { font-size: 1.2rem; }
+  .panel { width: 100%; flex-direction: row; flex-wrap: wrap; }
+  .card { flex: 1; min-width: 140px; }
+}
 
