@@ -174,7 +174,7 @@ Any action violating toroidal topology is invalid.
 
 ### 9.6. Figure 1 — CTOR Toroidal Structure
 
-*(Insert the toroidal transition diagram here.)*
+![Figure 1 — CTOR Toroidal Structure](assets/toroidal-structure.png)
 
 ---
 
