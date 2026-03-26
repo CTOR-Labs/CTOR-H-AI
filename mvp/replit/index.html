@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTOR — Toroidal Strategy Game</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>CTOR</h1>
+<div class="subtitle">Toroidal Strategy · Two Players</div>
+
+<div class="game-layout">
+
+  <!-- Board column -->
+  <div class="board-column">
+    <div id="board-wrap">
+      <canvas id="board-canvas"></canvas>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <div class="instr-title">Mouse Controls</div>
+
+      <div class="instr-row">
+        <span class="instr-key">PUT</span>
+        <span class="instr-desc">Click <strong>[Put]</strong> then left‑click an empty cell.</span>
+      </div>
+
+      <div class="instr-row">
+        <span class="instr-key">MOVE</span>
+        <span class="instr-desc">Click <strong>[Move]</strong> then drag your piece to an adjacent empty cell.</span>
+      </div>
+
+      <div class="instr-row">
+        <span class="instr-key">REPLACE</span>
+        <span class="instr-desc">Click <strong>[Replace]</strong>, select 2 of your pieces, then choose an empty cell.</span>
+      </div>
+
+      <div class="instr-row">
+        <span class="instr-key">END TURN</span>
+        <span class="instr-desc">Click <strong>[End Turn]</strong> to let the AI move.</span>
+      </div>
+
+      <div class="instr-row">
+        <span class="instr-key">EATING</span>
+        <span class="instr-desc">A piece is captured if surrounded by <strong>5+</strong> enemy pieces in its 3×3 neighbourhood.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="panel">
+
+    <div id="turn-ind" class="turn-indicator turn-none">Press "Start Game"</div>
+
+    <!-- Score -->
+    <div class="card">
+      <div class="card-title">Score</div>
+      <div class="score-row">
+        <span class="score-label">▶ You (black)</span>
+        <span class="score-value score-p1" id="sc1">0</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">▶ AI (white)</span>
+        <span class="score-value score-p2" id="sc2">0</span>
+      </div>
+    </div>
+
+    <!-- Counters -->
+    <div class="card" id="card-actions">
+      <div class="card-title">Your Turn</div>
+      <div class="action-row">
+        <span class="action-name">Put</span>
+        <span class="action-count" id="cnt-put">2</span>
+      </div>
+      <div class="action-row">
+        <span class="action-name">Move</span>
+        <span class="action-count" id="cnt-move">2</span>
+      </div>
+      <div class="action-row">
+        <span class="action-name">Replace</span>
+        <span class="action-count" id="cnt-replace">1</span>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="card">
+      <div class="card-title">Actions</div>
+      <div class="btn-row">
+        <button class="btn" id="btn-put" disabled>[ Put ] Place piece</button>
+        <button class="btn" id="btn-move" disabled>[ Move ] Move piece</button>
+        <button class="btn" id="btn-replace" disabled>[ Replace ] Swap pieces</button>
+        <button class="btn btn-end-turn" id="btn-end-turn" disabled>✓ End Turn</button>
+      </div>
+    </div>
+
+    <!-- Game buttons -->
+    <div class="card">
+      <div class="card-title">Game</div>
+      <div class="btn-row">
+        <button class="btn btn-start" id="btn-start">▶ Start Game</button>
+        <button class="btn btn-end-game" id="btn-end-game" disabled>■ End Game</button>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div id="status">Welcome to CTOR. Press "Start Game" to begin.</div>
+
+  </div>
+</div>
+
+<!-- Winner overlay -->
+<div id="winner-overlay">
+  <div class="winner-box">
+    <div class="winner-title" id="winner-title">Victory!</div>
+    <div class="winner-sub" id="winner-sub"></div>
+    <button class="btn-ok" id="btn-ok">OK</button>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script type="module" src="main.js"></script>
+
+</body>
+</html>
 
