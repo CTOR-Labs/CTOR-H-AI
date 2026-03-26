@@ -99,20 +99,23 @@ function setStatus(msg) {
 function updateUI() {
     const { s1, s2 } = CTOR;
 
-    // Update score
-    document.getElementById('score-you').textContent = s1;
-    document.getElementById('score-ai').textContent = s2;
+    // Score
+    document.getElementById('sc1').textContent = s1;
+    document.getElementById('sc2').textContent = s2;
 
-    // Update turn counters
-    document.getElementById('put-count').textContent = putLeft;
-    document.getElementById('move-count').textContent = moveLeft;
-    document.getElementById('replace-count').textContent = replaceLeft;
+    // Turn counters
+    document.getElementById('cnt-put').textContent = putLeft;
+    document.getElementById('cnt-move').textContent = moveLeft;
+    document.getElementById('cnt-replace').textContent = replaceLeft;
 
-    // Status message
+    // Turn indicator
+    const turnInd = document.getElementById('turn-ind');
     if (CTOR.currentPlayer === P1) {
-        setStatus("Your turn");
+        turnInd.textContent = "Your Turn";
+        turnInd.className = "turn-indicator turn-p1";
     } else {
-        setStatus("AI is thinking...");
+        turnInd.textContent = "AI Thinking...";
+        turnInd.className = "turn-indicator turn-p2";
     }
 }
 
@@ -131,6 +134,13 @@ function startGame() {
 
     drawBoard();
     updateUI();
+
+    // Enable buttons
+    document.getElementById('btn-put').disabled = false;
+    document.getElementById('btn-move').disabled = false;
+    document.getElementById('btn-replace').disabled = false;
+    document.getElementById('btn-end-turn').disabled = false;
+
     setStatus("Game started. Your move.");
 }
 
@@ -158,7 +168,7 @@ document.getElementById('btn-replace').onclick = () => {
     setStatus("Select 2 pieces to replace.");
 };
 
-document.getElementById('btn-end').onclick = async () => {
+document.getElementById('btn-end-turn').onclick = async () => {
     if (CTOR.currentPlayer !== P1) return;
 
     CTOR.endTurn();
