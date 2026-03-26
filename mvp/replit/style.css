@@ -54,12 +54,15 @@ h1 {
   text-transform: uppercase;
 }
 
+/* FIXED LAYOUT — prevents collapsing */
 .game-layout {
   display: flex;
   gap: 20px;
   align-items: flex-start;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 1200px;
 }
 
 /* Board column */
@@ -69,23 +72,30 @@ h1 {
   gap: 10px;
 }
 
+/* FIX: reserve space for canvas so it never collapses */
 #board-wrap {
   position: relative;
   display: inline-block;
+  min-width: 440px;   /* (8+2)*44 */
+  min-height: 440px;
 }
 
+/* FIX: ensure canvas is visible */
 #board-canvas {
   display: block;
+  width: 100%;
+  height: auto;
   cursor: default;
   image-rendering: pixelated;
 }
 
 /* Side panel */
 .panel {
-  width: 220px;
+  width: 240px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex-shrink: 0; /* FIX: prevents panel from stretching over canvas */
 }
 
 .card {
@@ -310,9 +320,12 @@ h1 {
   background: #00d4ff22;
 }
 
+/* Mobile */
 @media (max-width: 680px) {
   h1 { font-size: 1.2rem; }
+  .game-layout { flex-wrap: wrap; }
   .panel { width: 100%; flex-direction: row; flex-wrap: wrap; }
   .card { flex: 1; min-width: 140px; }
 }
+
 
