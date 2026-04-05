@@ -1,15 +1,18 @@
-Эта ветка **H‑AI (Human–Artificial Intelligence)** содержит разработку различных версий игры **CTOR**  
-https://ctorgame.com/  
 
-Разработка ведётся в соответствии с официальными правилами:  
-https://github.com/CTOR-Labs/CTOR-H-AI/blob/main/mvp/CTOR-Rules.md  
+This **H‑AI (Human–Artificial Intelligence)** branch contains the development of multiple versions of the game **CTOR**  
+https://ctorgame.com/
 
-Мы поддерживаем несколько прототипов версии **"Игрок против ИИ‑бота"**, созданных на разных платформах.  
-Вы можете помочь проекту, если хотите:  
-— улучшить UI  
-— улучшить алгоритмы ИИ‑бота  
-— предложить архитектурные решения  
-— протестировать прототипы  
+All implementations follow the official rules described here:  
+https://github.com/CTOR-Labs/CTOR-H-AI/blob/main/mvp/CTOR-Rules.md
+
+We maintain several prototypes of the **“Player vs AI Bot”** version of CTOR, created on different platforms and with different architectural approaches.
+
+You can contribute to the project by helping us:  
+— improve the UI  
+— enhance the AI bot algorithms  
+— propose architectural or gameplay improvements  
+— test and evaluate the prototypes  
+
 
 # 📌 Общее описание
 
