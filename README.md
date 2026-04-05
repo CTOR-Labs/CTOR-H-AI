@@ -13,87 +13,83 @@ You can contribute to the project by helping us:
 — propose architectural or gameplay improvements  
 — test and evaluate the prototypes  
 
-We apologize that the working process described below is written in Russian.  
-All developers on our team understand Russian, even though we currently live in Spain, Canada, and the United States.
+# Overview
 
-# 📌 Общее описание
+This repository contains three independent development lines of **CTOR‑H‑AI**.
 
-Репозиторий содержит **три независимые линии разработки CTOR‑H‑AI**.
+The goal of the first stage is to identify a convenient platform for prototyping the game interface (colors, animations, game‑control buttons).  
+The goal of the second stage is to determine a platform suitable for building a more commercial version, where the AI bot can be replaced and a functional prototype can be released for testing.
 
-**Цель первого этапа:** определить удобный сервис для отработки прототипа интерфейса (цвет, анимация, кнопки управления игрой).  
-**Цель второго этапа:** определить платформу, подходящую для создания более коммерческой версии, где можно менять ИИ‑бота и выпускать рабочий прототип для тестирования.
-
-Ниже перечислены **три рабочих прототипа**, размещённые в этом репозитории.
+Below are the three working prototypes included in this repository.
 
 ---
 
 # 🟦 Claude  
-**Деплой:** Netlify  
-**Формат:** один HTML‑файл (~1423 строки)
+**Deployment:** Netlify  
+**Format:** Single HTML file (~1423 lines)
 
-Первая версия CTOR, созданная в среде Claude.  
-Подходит для анализа, сравнения и исторического контекста.
+The first CTOR version created in the Claude environment.  
+Useful for analysis, comparison, and historical context.
 
 ---
 
 # 🟧 Lovable  
-**Деплой:** только через платформу Lovable  
-**Формат:** модульная структура React/Vite  
-**Особенность:** другие способы деплоя не работают
+**Deployment:** Only through the Lovable platform  
+**Format:** Modular React/Vite structure  
+**Note:** Other deployment methods do not work
 
-UI‑ориентированный прототип.  
-Используется для проверки интерфейсных решений, анимаций, визуальных элементов.  
-Логические компоненты переносимы, UI‑слой — нет.
+A UI‑oriented prototype.  
+Used for testing interface concepts, animations, and visual elements.  
+Logical components are portable; the UI layer is not.
 
 ---
 
 # 🟩 Replit  
-**Деплой:** внутри Replit  
-**Формат:** лёгкая JS/HTML версия  
-**Ограничение:** бесплатный режим работает 14 дней, далее требуется платный тариф  
-**Структура:** модульная
+**Deployment:** Inside Replit  
+**Format:** Lightweight JS/HTML version  
+**Limitation:** Free mode works for 14 days, then requires a paid plan  
+**Structure:** Modular
 
-Подходит для быстрых прототипов, хакатонов и демонстраций.
+Suitable for quick prototypes, hackathons, and demonstrations.
 
 ---
-# 🌐 Прототипы, которые существуют, но **не размещены в репозитории**
 
-Эти версии доступны в сети, но не включены в текущий репозиторий.
+# 🌐 Prototypes that exist but are **not included in this repository**
+
+These versions are available online but are not part of the current repository.
 
 ### **VO / Vercel**  
-**Название:** CTOR — Toroidal Capture Strategy Game  
-**Публичный деплой:**  
+**Title:** CTOR — Toroidal Capture Strategy Game  
+**Public deployment:**  
 https://a-ivs-h-vercel-j2ggfop68-bva5-7066s-projects.vercel.app/
 
 ### **Antigravity / Google**  
-**Название:** CTOR — Premium Logic Game  
-**Публичный деплой:**  
+**Title:** CTOR — Premium Logic Game  
+**Public deployment:**  
 https://stunning-dodol-992107.netlify.app/
 
 ### **Comet / Perplexity**  
-Локальная версия, хранится на ПК.  
-Может быть предоставлена по запросу.
+Local version stored on a PC.  
+Available upon request.
 
 ---
 
-# 🗺️ Roadmap (апрель 2026)
+# 🗺️ Roadmap (April 2026)
 
-### Доработка версии **Lovable** до уровня MVP, достаточного для тестирования:
-- UI‑дизайн режима «Игрок — ИИ» (коммерческая версия или версия для LinkedIn)  
-- Полный эвристический алгоритм  
-- Создание учебной версии игры с объяснением правил  
+### Upgrade the **Lovable** version to an MVP suitable for testing:
+- UI design for the “Player vs AI” mode (commercial version or LinkedIn version)  
+- Full heuristic algorithm  
+- Educational version of the game with rule explanations  
 
-### Проверка возможностей версии **Claude**:
-- возможность вносить сторонние решения по дизайну  
-- возможность интеграции алгоритма ИИ‑бота  
-- потенциальный перенос элементов из версии Lovable  
+### Evaluate the capabilities of the **Claude** version:
+- Ability to integrate external design solutions  
+- Ability to integrate the AI‑bot algorithm  
+- Potential migration of elements from the Lovable version  
 
 ---
 
-# 📝 Общие замечания
+# 📝 General Notes
 
-- Репозиторий намеренно разделён на **три независимые архитектуры**.  
-- Это позволяет параллельно развивать долгосрочные системы и быстрые прототипы.  
-- MVP‑ветки должны оставаться лёгкими и автономными.  
-- Ветка **Lovable** — UI‑экспериментальная, не предназначена для продакшена.  
-
+- The repository is intentionally divided into **three independent architectures**.  
+- This allows parallel development of long‑term systems and fast prototypes.  
+- MVP branches must remain lightweight and autonomous.  
