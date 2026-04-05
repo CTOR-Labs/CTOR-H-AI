@@ -13,6 +13,8 @@ You can contribute to the project by helping us:
 — propose architectural or gameplay improvements  
 — test and evaluate the prototypes  
 
+We apologize that the working process described below is written in Russian.  
+All developers on our team understand Russian, even though we currently live in Spain, Canada, and the United States.
 
 # 📌 Общее описание
 
