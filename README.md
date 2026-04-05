@@ -98,4 +98,20 @@ Available upon request.
 
 - The repository is intentionally divided into **three independent architectures**.  
 - This allows parallel development of long‑term systems and fast prototypes.  
-- MVP branches must remain lightweight and autonomous.  
+- MVP branches must remain lightweight and autonomous.
+
+#Tech Stack
+
+This project is built on a modular, multi‑platform development workflow designed to maximize speed, flexibility, and parallel iteration. Each platform serves a distinct purpose within the CTOR development ecosystem, enabling rapid prototyping while maintaining a stable production pipeline.
+
+Lovable — UI Prototyping Environment
+Lovable is used for rapid interface experimentation and visual iteration. It enables fast exploration of layouts, components, color systems, and UX patterns without requiring full implementation. The platform serves as a dedicated sandbox for front‑end design and UI innovation.
+
+Claude — Logic, Algorithms, and AI Agent Development
+Claude is responsible for the project’s core intelligence layer. All strategic reasoning, game logic, heuristics, and AI‑driven decision‑making modules are developed independently from the UI. This separation ensures clean architecture and allows the AI logic to evolve without affecting the interface.
+
+Replit — Fast JavaScript Experimentation
+Replit provides a lightweight environment for quick technical tests, isolated function prototypes, and rapid validation of ideas. It is ideal for experimenting with algorithms, utilities, and micro‑modules before integrating them into the main codebase.
+
+Netlify — Stable Production Deployment
+Netlify hosts the production‑ready builds of the project. It provides a reliable deployment pipeline, enabling external testing, demonstrations, and stable access to the latest working version. This ensures that the project remains accessible and testable outside the prototyping environment.
