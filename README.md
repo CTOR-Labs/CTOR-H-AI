@@ -32,7 +32,7 @@ The first CTOR version created in the Claude environment.
 Useful for analysis, comparison, and historical context.
 
 **Public deployment:**  
-https://luminous-marzipan-e6de40.netlify.app/
+https://ctor-claude-v1.netlify.app/ 
 ---
 
 # 🟧 Lovable  
@@ -45,7 +45,7 @@ Used for testing interface concepts, animations, and visual elements.
 Logical components are portable; the UI layer is not.
 
 **Public deployment:**  
-https://genuine-torte-f35ddb.netlify.app/
+https://ctor-lovable-palitra.netlify.app/ 
 ---
 
 # 🟩 Replit  
@@ -72,7 +72,7 @@ https://a-ivs-h-vercel-j2ggfop68-bva5-7066s-projects.vercel.app/
 ### **Antigravity / Google**  
 **Title:** CTOR — Premium Logic Game  
 **Public deployment:**  
-https://stunning-dodol-992107.netlify.app/
+https://ctor-antigravity-v1.netlify.app/ 
 
 ### **Comet / Perplexity**  
 Local version stored on a PC.  
