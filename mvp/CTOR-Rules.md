@@ -174,10 +174,8 @@ Any action violating toroidal topology is invalid.
 
 ### 9.6. Figure 1 — CTOR Toroidal Structure
 
-![Figure 1 — CTOR Toroidal Structure](../docs/RULES/CTOR-COLOR_FIELD.png)
+---<img width="1318" height="1328" alt="CTOR ART_FIELD2" src="https://github.com/user-attachments/assets/b0458dc0-518c-4cc6-bcd8-91d435a6c903" />
 
-
----
 
 ## 10. 3×3 Neighborhood and Capture
 
