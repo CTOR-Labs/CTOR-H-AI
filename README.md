@@ -31,6 +31,8 @@ Below are the three working prototypes included in this repository.
 The first CTOR version created in the Claude environment.  
 Useful for analysis, comparison, and historical context.
 
+**Public deployment:**  
+https://luminous-marzipan-e6de40.netlify.app/
 ---
 
 # 🟧 Lovable  
@@ -42,6 +44,8 @@ A UI‑oriented prototype.
 Used for testing interface concepts, animations, and visual elements.  
 Logical components are portable; the UI layer is not.
 
+**Public deployment:**  
+https://genuine-torte-f35ddb.netlify.app/
 ---
 
 # 🟩 Replit  
@@ -52,6 +56,8 @@ Logical components are portable; the UI layer is not.
 
 Suitable for quick prototypes, hackathons, and demonstrations.
 
+**Public deployment:** 
+https://ctor-game-mvp--vlad287.replit.app/
 ---
 
 # 🌐 Prototypes that exist but are **not included in this repository**
