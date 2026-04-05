@@ -1,153 +1,80 @@
-# 🌐 CTOR‑H‑AI  
-### Hybrid Architecture for CTOR AI Development  
-Maintainer: Vladimir (CTOR‑Labs)  
-Status: Active
+# 📌 Общее описание
 
+Репозиторий содержит **три независимые линии разработки CTOR‑H‑AI**.
 
----
+**Цель первого этапа:** определить удобный сервис для отработки прототипа интерфейса (цвет, анимация, кнопки управления игрой).  
+**Цель второго этапа:** определить платформу, подходящую для создания более коммерческой версии, где можно менять ИИ‑бота и выпускать рабочий прототип для тестирования.
 
-## 📌 Overview
-This repository contains **two independent development lines** for CTOR‑H‑AI:
-
-1. **Model Architecture** — a long‑term modular system for research and development of CTOR AI algorithms.  
-2. **MVP Architecture** — lightweight JS/HTML versions of CTOR designed for rapid prototyping and competitions (e.g., Replit Buildathon).
-
-Both lines evolve in parallel and serve different purposes.
+Ниже перечислены **три рабочих прототипа**, размещённые в этом репозитории.
 
 ---
 
-# 🧠 1. Model Architecture (Long‑Term System)  
-Directory: `model/`
+# 🟦 Claude  
+**Деплой:** Netlify  
+**Формат:** один HTML‑файл (~1423 строки)
 
-A full research environment for CTOR AI development:
-
-- modular structure  
-- independent algorithms  
-- extensible design  
-- compatible with future CTOR‑Engine  
-- runnable in both Node and browser environments  
-
-### 📁 Structure
-model/
-heuristics/      # Heuristic evaluation (v2.1)
-minimax/         # Minimax & alpha-beta (planned)
-mcts/            # Monte-Carlo Tree Search (planned)
-rl/              # Reinforcement Learning (planned)
-utils/           # Shared utilities
-ai.js            # AI entry point
-README.md
-
-
-### 🎯 Purpose
-- research and experimentation  
-- algorithm testing  
-- foundation for future CTOR platform  
-- preparation for RL and self‑play  
-- long‑term architectural development  
-
-This branch is **not** intended for hackathons or rapid MVPs.
+Первая версия CTOR, созданная в среде Claude.  
+Подходит для анализа, сравнения и исторического контекста.
 
 ---
 
-# ⚡ 2. MVP Architecture (JS/HTML Game Versions)  
-Directory: `mvp/`
+# 🟧 Lovable  
+**Деплой:** только через платформу Lovable  
+**Формат:** модульная структура React/Vite  
+**Особенность:** другие способы деплоя не работают
 
-Lightweight, standalone CTOR versions that run:
-
-- directly in the browser  
-- without build tools  
-- without servers  
-- without APIs  
-- as a single executable project  
-
-Ideal for:
-
-- rapid prototyping  
-- demos  
-- hackathons  
-- UI/UX testing  
+UI‑ориентированный прототип.  
+Используется для проверки интерфейсных решений, анимаций, визуальных элементов.  
+Логические компоненты переносимы, UI‑слой — нет.
 
 ---
 
-## 🟦 2.1. `mvp/claude/` — First Prototype  
-The initial CTOR version created in the CLAUDE environment.
+# 🟩 Replit  
+**Деплой:** внутри Replit  
+**Формат:** лёгкая JS/HTML версия  
+**Ограничение:** бесплатный режим работает 14 дней, далее требуется платный тариф  
+**Структура:** модульная
 
-### 📁 Structure
-mvp/claude/
-index.html
-script.js
-style.css
-README.md
-
-
-### 🎯 Purpose
-- historical prototype  
-- baseline implementation  
-- useful for comparison and analysis  
+Подходит для быстрых прототипов, хакатонов и демонстраций.
 
 ---
 
-## 🟩 2.2. `mvp/replit/` — Replit Buildathon Version  
-A new CTOR version optimized specifically for **Replit Agent 4 Buildathon**.
+# 🌐 Прототипы, которые существуют, но **не размещены в репозитории**
 
-### 📁 Structure
-mvp/replit/
-index.html       # UI
-main.js          # Entry point
-engine.js        # CTOR engine in one file
-ai-lite.js       # Lightweight AI for MVP
-style.css
-README.md        # Buildathon-specific documentation
+Эти версии доступны в сети или локально, но не включены в текущий репозиторий.
 
+### **VO / Vercel**  
+**Название:** CTOR — Toroidal Capture Strategy Game  
+Публичный деплой.
 
-### ⚡ Features
-- single executable project  
-- runs instantly in Replit  
-- no modules, no Node, no API  
-- fast, simple, competition‑ready  
+### **Antigravity / Google**  
+**Название:** CTOR — Premium Logic Game  
+Публичный деплой.
+
+### **Comet / Perplexity**  
+Локальная версия, хранится на ПК.  
+Может быть предоставлена по запросу.
 
 ---
 
-# 🔍 Why Two Architectures?
+# 🗺️ Roadmap (апрель 2026)
 
-### 🧠 Model Architecture
-- designed for long‑term growth  
-- supports complex algorithms  
-- ideal for research, RL, MCTS, minimax  
-- forms the backbone of future CTOR platform  
+### Доработка версии **Lovable** до уровня MVP, достаточного для тестирования:
+- UI‑дизайн режима «Игрок — ИИ» (коммерческая версия или версия для LinkedIn)  
+- Полный эвристический алгоритм  
+- Создание учебной версии игры с объяснением правил  
 
-### ⚡ MVP Architecture
-- designed for speed  
-- minimal infrastructure  
-- easy to demo  
-- perfect for hackathons  
-- ideal for rapid UI/UX iteration  
-
-Both lines complement each other without interfering.
+### Проверка возможностей версии **Claude**:
+- возможность вносить сторонние решения по дизайну  
+- возможность интеграции алгоритма ИИ‑бота  
+- потенциальный перенос элементов из версии Lovable  
 
 ---
 
-# 🗺️ Roadmap
+# 📝 Общие замечания
 
-### Model
-- v2.2 — heuristic expansion  
-- v2.3 — minimax + alpha‑beta  
-- v2.4 — MCTS  
-- v2.5+ — RL and self‑play  
-
-### MVP
-- Replit Buildathon release  
-- UI improvements  
-- AI‑lite enhancements  
-- eating/duplication animations  
-- presentation materials  
-
----
-
-# 📝 Maintainer Notes
-- The repository is intentionally split into two independent architectures.  
-- This allows simultaneous development of long‑term systems and rapid prototypes.  
-- MVP branches must remain lightweight and self‑contained.  
-- Model branch must remain modular and extensible.
-
+- Репозиторий намеренно разделён на **три независимые архитектуры**.  
+- Это позволяет параллельно развивать долгосрочные системы и быстрые прототипы.  
+- MVP‑ветки должны оставаться лёгкими и автономными.  
+- Ветка **Lovable** — UI‑экспериментальная, не предназначена для продакшена.  
 
