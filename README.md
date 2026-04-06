@@ -115,3 +115,58 @@ Replit provides a lightweight environment for quick technical tests, isolated fu
 
 Netlify — Stable Production Deployment
 Netlify hosts the production‑ready builds of the project. It provides a reliable deployment pipeline, enabling external testing, demonstrations, and stable access to the latest working version. This ensures that the project remains accessible and testable outside the prototyping environment.
+
+Architecture Rationale: Development Stack Selection
+This project uses a multi‑platform development workflow optimized for rapid prototyping, modularity, and clean separation of concerns. The following analysis explains why each platform was selected based on five core criteria essential for CTOR‑H‑AI development.
+
+1. UI Experimentation
+Best tool: Lovable
+
+Lovable provides an extremely fast environment for UI prototyping, enabling rapid iteration on layouts, components, and visual concepts. Its AI‑assisted editor allows quick exploration of interface ideas without manual coding overhead. This makes it the most efficient choice for front‑end experimentation.
+
+2. Experiments with Heuristic AI Bot Algorithms
+Best tools: Claude + Replit
+
+Heuristic logic, decision‑making modules, and AI agent behavior require flexibility and isolation from UI constraints.
+Claude excels at generating and refining algorithmic logic, while Replit offers an instant execution environment for testing JavaScript modules. Together, they form an ideal setup for developing and validating AI behavior independently from the interface.
+
+3. Portability and Transferability of the Project
+Best tools: Replit + Netlify
+
+A portable, production‑ready codebase requires full control over the project structure.
+Replit enables clean modular development, while Netlify provides stable, predictable deployment with no platform lock‑in. This ensures that the project can be exported, versioned, and deployed anywhere without dependency on proprietary environments.
+
+4. Modular Architecture (UI, AI, Engine Separation)
+Best tools: Replit + GitHub + Claude
+
+A modular architecture is essential for CTOR‑H‑AI.
+Replit and GitHub allow the project to be structured into independent modules:
+
+UI — exported from Lovable
+
+AI — heuristic logic generated with Claude
+
+Engine — core mechanics and state management
+
+API — integration layer for external services
+
+This separation ensures maintainability, scalability, and clean integration between components.
+
+5. API‑Driven Prototyping
+Best tools: Replit + Claude
+
+API prototyping requires a flexible environment where endpoints, clients, and integration logic can be tested quickly.
+Replit provides instant execution and debugging, while Claude can generate API wrappers, schemas, and integration logic. This combination supports fast iteration and clean implementation of API‑based features.
+
+Conclusion: Optimal Stack for CTOR‑H‑AI
+Based on the five criteria, the optimal development stack is:
+
+Lovable → UI prototyping and visual experimentation
+
+Claude → heuristic logic, AI agent behavior, algorithm design
+
+Replit → core engine, modular architecture, API prototyping
+
+Netlify → stable production deployment and external demos
+
+This architecture provides maximum flexibility, clean separation of concerns, and a highly efficient workflow for building and evolving CTOR‑H‑AI.
