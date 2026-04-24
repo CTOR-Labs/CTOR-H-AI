@@ -58,9 +58,9 @@ An experimental version for selecting a color palette for chips and game board d
 **Structure:** Modular
 
 Suitable for quick prototypes, hackathons, and demonstrations.
-
 **Public deployment:** 
 https://ctor-game-mvp--vlad287.replit.app/
+
 ---
 
 # 🌐 Prototypes that exist but are **not included in this repository**
