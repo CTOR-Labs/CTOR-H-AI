@@ -36,3 +36,6 @@ MIT License.
 
 Vladimir — creator of CTOR, its rules, topology, mechanics, and AI design.
 
+## Working prototipe
+https://ctor-game-mvp--vlad287.replit.app/ 
+
