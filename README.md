@@ -36,17 +36,20 @@ https://ctor-claude-v1.netlify.app/
 ---
 
 # 🟧 Lovable  
-**Deployment:** Only through the Lovable platform  
+**Deployment:** through the Lovable or Netlify platform
 **Format:** Modular React/Vite structure  
-**Note:** Other deployment methods do not work
 
 A UI‑oriented prototype.  
 Used for testing interface concepts, animations, and visual elements.  
 Logical components are portable; the UI layer is not.
 
 **Public deployment:**  
-https://ctor-lovable-palitra.netlify.app/ 
+
+https://ctor-lovable-palitra.netlify.app/
+An experimental version for selecting a color palette for chips and game board design.
 ---
+https://ctor-mobile-lovable-5.netlify.app/
+Basic mobile version and move without move control buttons, AI simple heuristics, plus video torus and rules.
 
 # 🟩 Replit  
 **Deployment:** Inside Replit  
