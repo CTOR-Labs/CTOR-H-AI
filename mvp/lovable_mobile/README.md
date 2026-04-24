@@ -1,6 +1,7 @@
 # Welcome to your Lovable project
 
-## Project info
+## Project info - Access to Lovable is temporarily disabled.
+
 
 **URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
@@ -8,7 +9,7 @@
 
 There are several ways of editing your application.
 
-**Use Lovable**
+**Use Lovable** Access to Lovable is temporarily disabled.
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
