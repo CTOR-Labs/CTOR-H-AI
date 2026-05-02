@@ -29,11 +29,8 @@ VC Studio-GitHub-Vercel
 
 Here you can see what this looks like in the form of experimental models, which have been moved to the main repository with the label R&D
 GitHub-Vercel
-
 CTOR-Labs/R-D_Project-AI-Level AI Bots competition
-
 CTOR-Labs/R-D_5mobile-v2 – Development version 
-
 CTOR-Labs/VCStudio Base mobile
 
 # 🗺️ Roadmap (April 2026)
