@@ -23,6 +23,7 @@ The goal of the second stage is to determine a platform suitable for building a 
 Below are the three working prototypes included in this repository.
 
 ---
+#Selecting a platform for the first stage#
 
 # 🟦 Claude  
 **Deployment:** Netlify  
