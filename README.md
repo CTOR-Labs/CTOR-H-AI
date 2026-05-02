@@ -23,16 +23,17 @@ The goal of the second stage is to determine a platform suitable for building a 
 Below are the three working prototypes included in this repository.
 
 ---
-
----
 # 🗺️ Roadmap (May 2026)
 For the development of new versions (since May 2026), we are using a new tech stack:
 VC Studio-GitHub-Vercel 
 
 Here you can see what this looks like in the form of experimental models, which have been moved to the main repository with the label R&D
 GitHub-Vercel
+
 CTOR-Labs/R-D_Project-AI-Level AI Bots competition
+
 CTOR-Labs/R-D_5mobile-v2 – Development version 
+
 CTOR-Labs/VCStudio Base mobile
 
 # 🗺️ Roadmap (April 2026)
@@ -48,6 +49,7 @@ CTOR-Labs/VCStudio Base mobile
 - Potential migration of elements from the Lovable version
 ### Result
 https://new-beginning-core.lovable.app/
+
 https://vc-studio.vercel.app/ Cleare from GitHub
 
 # 📝 Stage 1 (before April 2026)
