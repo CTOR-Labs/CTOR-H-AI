@@ -167,5 +167,7 @@ https://ctor-antigravity-v1.netlify.app/
 Local version stored on a PC.  
 Available upon request.
 
+# Have questions about collaboration?
+Fill out our form.
+(https://ctorgame.com/science%26education)
 
-This architecture provides maximum flexibility, clean separation of concerns, and a highly efficient workflow for building and evolving CTOR‑H‑AI.
