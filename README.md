@@ -23,66 +23,17 @@ The goal of the second stage is to determine a platform suitable for building a 
 Below are the three working prototypes included in this repository.
 
 ---
-#Selecting a platform for the first stage#
-
-# 🟦 Claude  
-**Deployment:** Netlify  
-**Format:** Single HTML file (~1423 lines)
-
-The first CTOR version created in the Claude environment.  
-Useful for analysis, comparison, and historical context.
-
-**Public deployment:**  
-https://ctor-claude-v1.netlify.app/ 
----
-
-# 🟧 Lovable  
-**Deployment:** through the Lovable or Netlify platform
-**Format:** Modular React/Vite structure  
-
-A UI‑oriented prototype.  
-Used for testing interface concepts, animations, and visual elements.  
-Logical components are portable; the UI layer is not.
-
-**Public deployment:**  
----
-https://ctor-mobile-lovable-5.netlify.app/
-Basic mobile version and move without move control buttons, AI simple heuristics, plus video torus and rules.
-
-https://ctor-lovable-palitra.netlify.app/
-An experimental version for selecting a color palette for chips and game board design.
-
-# 🟩 Replit  
-**Deployment:** Inside Replit  
-**Format:** Lightweight JS/HTML version  
-**Limitation:** Free mode works for 14 days, then requires a paid plan  
-**Structure:** Modular
-
-Suitable for quick prototypes, hackathons, and demonstrations.
-**Public deployment:** 
-https://ctor-game-mvp--vlad287.replit.app/
 
 ---
+# 🗺️ Roadmap (May 2026)
+For the development of new versions (since May 2026), we are using a new tech stack:
+VC Studio-GitHub-Vercel 
 
-# 🌐 Prototypes that exist but are **not included in this repository**
-
-These versions are available online but are not part of the current repository.
-
-### **VO / Vercel**  
-**Title:** CTOR — Toroidal Capture Strategy Game  
-**Public deployment:**  
-https://a-ivs-h-vercel-j2ggfop68-bva5-7066s-projects.vercel.app/
-
-### **Antigravity / Google**  
-**Title:** CTOR — Premium Logic Game  
-**Public deployment:**  
-https://ctor-antigravity-v1.netlify.app/ 
-
-### **Comet / Perplexity**  
-Local version stored on a PC.  
-Available upon request.
-
----
+Here you can see what this looks like in the form of experimental models, which have been moved to the main repository with the label R&D
+GitHub-Vercel
+CTOR-Labs/R-D_Project-AI-Level AI Bots competition
+CTOR-Labs/R-D_5mobile-v2 – Development version 
+CTOR-Labs/VCStudio Base mobile
 
 # 🗺️ Roadmap (April 2026)
 
@@ -94,11 +45,12 @@ Available upon request.
 ### Evaluate the capabilities of the **Claude** version:
 - Ability to integrate external design solutions  
 - Ability to integrate the AI‑bot algorithm  
-- Potential migration of elements from the Lovable version  
+- Potential migration of elements from the Lovable version
+### Result
+https://new-beginning-core.lovable.app/
+https://vc-studio.vercel.app/ Cleare from GitHub
 
----
-
-# 📝 General Notes
+# 📝 Stage 1 (before April 2026)
 
 - The repository is intentionally divided into **three independent architectures**.  
 - This allows parallel development of long‑term systems and fast prototypes.  
@@ -157,5 +109,63 @@ Claude → heuristic logic, AI agent behavior, algorithm design
 Replit → core engine, modular architecture, API prototyping
 
 Netlify → stable production deployment and external demos
+
+#Selecting a platform for the first stage#
+
+# 🟦 Claude  
+**Deployment:** Netlify  
+**Format:** Single HTML file (~1423 lines)
+
+The first CTOR version created in the Claude environment.  
+Useful for analysis, comparison, and historical context.
+
+**Public deployment:**  
+https://ctor-claude-v1.netlify.app/ 
+---
+
+# 🟧 Lovable  
+**Deployment:** through the Lovable or Netlify platform
+**Format:** Modular React/Vite structure  
+
+A UI‑oriented prototype.  
+Used for testing interface concepts, animations, and visual elements.  
+Logical components are portable; the UI layer is not.
+
+**Public deployment:**  
+---
+https://ctor-mobile-lovable-5.netlify.app/
+Basic mobile version and move without move control buttons, AI simple heuristics, plus video torus and rules.
+
+https://ctor-lovable-palitra.netlify.app/
+An experimental version for selecting a color palette for chips and game board design.
+
+# 🟩 Replit  
+**Deployment:** Inside Replit  
+**Format:** Lightweight JS/HTML version  
+**Limitation:** Free mode works for 14 days, then requires a paid plan  
+**Structure:** Modular
+
+Suitable for quick prototypes, hackathons, and demonstrations.
+**Public deployment:** 
+https://ctor-game-mvp--vlad287.replit.app/
+---
+# 🌐 Prototypes that exist but are **not included in this repository**
+
+These versions are available online but are not part of the current repository.
+
+### **VO / Vercel**  
+**Title:** CTOR — Toroidal Capture Strategy Game  
+**Public deployment:**  
+https://a-ivs-h-vercel-j2ggfop68-bva5-7066s-projects.vercel.app/
+
+### **Antigravity / Google**  
+**Title:** CTOR — Premium Logic Game  
+**Public deployment:**  
+https://ctor-antigravity-v1.netlify.app/ 
+
+### **Comet / Perplexity**  
+Local version stored on a PC.  
+Available upon request.
+
 
 This architecture provides maximum flexibility, clean separation of concerns, and a highly efficient workflow for building and evolving CTOR‑H‑AI.
