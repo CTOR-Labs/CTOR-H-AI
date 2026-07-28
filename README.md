@@ -139,16 +139,6 @@ Basic mobile version and move without move control buttons, AI simple heuristics
 https://ctor-lovable-palitra.netlify.app/
 An experimental version for selecting a color palette for chips and game board design.
 
-# 🟩 Replit  
-**Deployment:** Inside Replit  
-**Format:** Lightweight JS/HTML version  
-**Limitation:** Free mode works for 14 days, then requires a paid plan  
-**Structure:** Modular
-
-Suitable for quick prototypes, hackathons, and demonstrations.
-**Public deployment:** 
-https://ctor-game-mvp--vlad287.replit.app/
----
 # 🌐 Prototypes that exist but are **not included in this repository**
 
 These versions are available online but are not part of the current repository.
@@ -169,5 +159,5 @@ Available upon request.
 
 # Have questions about collaboration?
 Fill out our form.
-(https://ctorgame.com/science%26education)
+(https://ctorgame.com)
 
