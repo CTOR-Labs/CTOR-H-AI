@@ -7,6 +7,14 @@ https://github.com/CTOR-Labs/CTOR-H-AI/blob/main/mvp/CTOR-Rules.md
 
 We maintain several prototypes of the **“Player vs AI Bot”** version of CTOR, created on different platforms and with different architectural approaches.
 
+### Resultы 2026
+
+https://vc-studio.vercel.app/ H-AI Game - play with an AI bot
+
+https://new-beginning-core.lovable.app/ Play with an AI bots 5 AI bot versions
+
+https://ctor-lovable-palitra.netlify.app/ Play with an AI bot and choose the color of the tiles and the color of the playing field.
+
 You can contribute to the project by helping us:  
 — improve the UI  
 — enhance the AI bot algorithms  
@@ -45,11 +53,6 @@ GitHub-Vercel
 - Ability to integrate external design solutions  
 - Ability to integrate the AI‑bot algorithm  
 - Potential migration of elements from the Lovable version
-### Result
-
-https://vc-studio.vercel.app/ H-AI Game
-
-https://new-beginning-core.lovable.app/ 5 Ai bots vs H
 
 # 📝 Stage 1 (before April 2026)
 
