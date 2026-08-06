@@ -46,9 +46,10 @@ GitHub-Vercel
 - Ability to integrate the AI‑bot algorithm  
 - Potential migration of elements from the Lovable version
 ### Result
-https://new-beginning-core.lovable.app/
 
-https://vc-studio.vercel.app/ Cleare from GitHub
+https://vc-studio.vercel.app/ H-AI Game
+
+https://new-beginning-core.lovable.app/ 5 Ai bots vs H
 
 # 📝 Stage 1 (before April 2026)
 
