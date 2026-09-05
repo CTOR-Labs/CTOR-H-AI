@@ -7,7 +7,7 @@ https://github.com/CTOR-Labs/CTOR-H-AI/blob/main/mvp/CTOR-Rules.md
 
 We maintain several prototypes of the **“Player vs AI Bot”** version of CTOR, created on different platforms and with different architectural approaches.
 
-### Resultы 2026
+### Relises 2026
 
 https://vc-studio.vercel.app/ H-AI Game - play with an AI bot
 
