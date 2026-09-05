@@ -1,10 +1,7 @@
 
 This **H‑AI (Human–Artificial Intelligence)** branch contains the development of multiple versions of the game **CTOR**  
-https://ctorgame.com/
-
 All implementations follow the official rules described here:  
 https://github.com/CTOR-Labs/CTOR-H-AI/blob/main/mvp/CTOR-Rules.md
-
 We maintain several prototypes of the **“Player vs AI Bot”** version of CTOR, created on different platforms and with different architectural approaches.
 
 ### Relises 2026
